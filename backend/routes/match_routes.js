@@ -92,8 +92,50 @@ module.exports = function(app,connection){
         connection.query(query,function(err,result){
             if(err) throw err;
             response['finale_details'] = result;
-            res.send(response);
+            //res.send(response);
         });
 
     });
+
+    app.get('/:season_id/:team/:player_name',(req,res)=>{
+        var season_id = parseInt(req.params.season_id);
+        var team = req.params.team;
+        var player_name = req.params.player_name;
+        var player_id = null;
+        query = "select Player.Player_Id,Batting_Hand,Bowling_Skill from Player \
+                where Player.Player_Name = '"+player_name+"'";
+        connection.query(query,(err,player_info)=>{
+            if(err) throw err;
+            player_id = player_info[0]['Player_Id'];
+            
+            batting_query = "select sum(Ball_by_Ball.Batsman_Scored) as Season_Score from Ball_by_Ball \
+                    inner join Matches on Matches.Match_Id = Ball_by_Ball.Match_Id \
+                    where Matches.Season_Id = "+season_id+" and Ball_by_Ball.Striker_Id = "+player_id;
+            connection.query(batting_query,(err,result)=>{
+                if(err) throw err;
+                
+                player_info["0"]['Total_Runs'] = result[0]['Season_Score']; 
+                console.log(player_info)
+                //res.send(player_info);
+            });
+            
+            bowling_query = "select count(Ball_by_Ball.Player_dissimal_Id) as Total_Wickets from Ball_by_Ball \
+                            inner join Matches on Matches.Match_Id = Ball_by_Ball.Match_Id \
+                            where Matches.Season_Id = "+season_id+" and Ball_by_Ball.Bowler_Id = "+player_id+" and Ball_by_Ball.Player_dissimal_Id != 0 \
+                            and Ball_by_Ball.Dissimal_Type != 'run out';"
+            
+            connection.query(bowling_query,(err,result)=>{
+                if(err) throw err;
+                player_info["0"]["Total_Wickets"] = result[0]['Total_Wickets'];    
+                res.send(player_info);
+            })
+                    
+        })
+ 
+    });
+
+    app.get('/:team_name',(req,res)=>{
+        var team_name = req.params.team_name;
+        
+    })
 }
