@@ -92,7 +92,7 @@ module.exports = function(app,connection){
         connection.query(query,function(err,result){
             if(err) throw err;
             response['finale_details'] = result;
-            //res.send(response);
+            res.send(response);
         });
 
     });
@@ -134,8 +134,74 @@ module.exports = function(app,connection){
  
     });
 
-    app.get('/:team_name',(req,res)=>{
+    app.get('/:season_id/:team_name',(req,res)=>{
         var team_name = req.params.team_name;
+        var season_id = parseInt(req.params.season_id);
+        var team_Id = null;
+        var final_result = {};
+        query = "select distinct Team.Team_Id,Team.Team_Name from Team inner join \
+                Matches on (Team.Team_Id = Matches.Team_Name_Id or Team.Team_Id = Matches.Opponent_Team_Id) \
+                and Matches.Season_Id = "+season_id+" and Team.Team_Name = '"+team_name+"';"
         
+        connection.query(query,(err,result)=>{
+            if(err) throw err;
+            team_Id = result["0"]["Team_Id"]
+
+        query = "select count(Matches.Match_Id) as Total_Matches from Matches \
+                    where (Matches.Team_Name_Id = "+team_Id+" or Matches.Opponent_Team_Id = "+team_Id+") \
+                    and Matches.Season_Id = "+season_id+";"
+        
+        connection.query(query,(err,result)=>{
+            if(err) throw err;
+            //    res.send(result)
+            final_result['Total_Matches_Played'] = result["0"]["Total_Matches"] 
+                //res.send(final_result);
+            
+        });
+
+        query = "select count(Matches.Match_Winner_Id) as Win_Matches from Matches where \
+                    (Matches.Team_Name_Id = "+team_Id+" or Matches.Opponent_Team_Id = "+team_Id+") \
+                     and Matches.Season_Id = "+season_id+" and Matches.Match_Winner_Id = "+team_Id+";"
+            
+        connection.query(query,(err,result)=>{
+            if(err) throw err;
+            final_result['Win_Matches'] = result["0"]["Win_Matches"]; 
+            final_result['Lost_Matches'] = final_result["Total_Matches_Played"] - final_result["Win_Matches"];
+            //res.send(final_result);
+            
+        });
+        
+        query = "select the_Table.Score,the_Table.Extra,Team.Team_Short_Code from Team inner join \
+            (select Sum(Ball_by_Ball.Batsman_Scored)as Score,Sum(Ball_by_Ball.Extra_Runs) as Extra,Table_2.Match_Id \
+            ,Ball_by_Ball.Team_Batting_Id \
+            from Ball_by_Ball  right join ( \
+            select Ball_by_Ball.Match_Id,Match_Id_Table.Team_Id \
+            from Ball_by_Ball inner join \
+            (select distinct Matches.Match_Id ,Team_Id_Table.Team_Id from Matches inner join \
+            (select distinct Team.Team_Id from Team inner join \
+            Matches on (Team.Team_Id = Matches.Team_Name_Id or Team.Team_Id = Matches.Opponent_Team_Id) \
+            and Matches.Season_Id = "+season_id+"  and Team.Team_Name = '"+team_name+"') as Team_Id_Table \
+            on (Matches.Team_Name_Id = Team_Id_Table.Team_Id or Matches.Opponent_Team_Id = Team_Id_Table.Team_Id) \
+            and Matches.Season_Id = "+season_id+") as Match_Id_Table on Ball_by_Ball.Match_Id = Match_Id_Table.Match_Id \
+            group by Ball_by_Ball.Match_Id \
+            ) as Table_2 on Ball_by_Ball.Match_Id = Table_2.Match_Id group by Ball_by_Ball.Match_Id,Ball_by_Ball.Innings_Id) as the_Table on Team.Team_Id = the_Table.Team_Batting_Id;\;"
+        
+        
+        connection.query(query,(err,result)=>{
+            if(err) throw err;
+            final_result['Performance'] = result;
+            res.send(final_result);
+            
+        });
+        
+
+    });
+        
+    
+    });
+
+    app.get('/:date',(req,res)=>{
+        var date = req.params.date;
     })
+
 }
