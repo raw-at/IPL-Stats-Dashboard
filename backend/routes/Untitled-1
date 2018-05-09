@@ -1,0 +1,12 @@
+
+select table_C.Player_Name,table_C.Score,Team_Short_Code as Team From Team inner join 
+(select Player_Name,table_B.Score,table_B.Team_Batting_Id from Player inner join (
+select Team_Batting_Id,Striker_Id,Sum(Batsman_Scored) as Score from Ball_by_Ball inner join  (
+select Match_Id from Matches where  Matches.Match_Date like '18-Apr-08')as table_A on
+Ball_by_Ball.Match_Id = table_A.Match_Id group by Striker_ID) as table_B 
+on table_B.Striker_Id = Player.Player_Id) as table_C on Team.Team_Id = table_C.Team_Batting_Id;
+
+
+select table_A.Team_Name_Id ,sum(Batsman_Scored),Sum(Extra_Runs), Over_Id,Innings_Id from Ball_by_Ball inner join
+(select Match_Id,Team_Name_Id from Matches where  Matches.Match_Date like '19-Apr-08') as table_A on
+Ball_by_Ball.Match_Id = table_A.Match_Id where Innings_Id = 2 group by Over_Id;
