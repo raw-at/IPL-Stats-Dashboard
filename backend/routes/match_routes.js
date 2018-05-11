@@ -16,7 +16,11 @@ module.exports = function(app,connection){
             //console.log(team_season_wise)
 
         });
-        query = "select * from Season where Season.Season_Id = "+id;
+        query = "select Player_Name as Man_of_the_Series,table_C.Purple_Cap,table_C.Orange_Cap from Player inner join\
+        (select Player_Name as Purple_Cap,table_B.Orange_Cap,table_B.Man_of_the_Series_Id from Player inner join \
+        (select Player_Name as Orange_Cap,table_A.Purple_Cap_Id,table_A.Man_of_the_Series_Id from Player inner join\
+        (select * from Season where Season.Season_Id = "+id+")as table_A on Player.Player_Id = table_A.Orange_Cap_Id)\
+        as table_B on table_B.Purple_Cap_Id = Player.Player_Id) as table_C on Player.Player_Id = table_C.Man_of_the_Series_Id;"
 
         connection.query(query,function(err,result){
             if(err) throw err;
@@ -74,7 +78,7 @@ module.exports = function(app,connection){
         connection.query(query,function(err,result){
             if(err) throw err;
             response['total_sixes'] = result;
-            
+            response['Season'] = id;
         });
 
         query = "Select theTable.Team_A,theTable.Team_B,Team.Team_Short_Code as Winner, \
@@ -94,6 +98,7 @@ module.exports = function(app,connection){
             response['finale_details'] = result;
             res.send(response);
         });
+
 
     });
 
@@ -134,15 +139,28 @@ module.exports = function(app,connection){
  
     });
 
-    app.get('/:season_id/:team_name',(req,res)=>{
-        var team_name = req.params.team_name;
+    app.get('/:season_id/:team_short_name',(req,res)=>{
+        var team_short_name = req.params.team_short_name;
+        console.log(team_short_name)
+        var team_name = null;
         var season_id = parseInt(req.params.season_id);
         var team_Id = null;
         var final_result = {};
+
+
+        query = "select Team_Name from Team where Team.Team_Short_Code like '"+team_short_name+"%'";
+        console.log(query)
+        connection.query(query,(err,result)=>{
+            if(err) throw err;
+            team_name = result[0]['Team_Name'];
+            console.log(team_name)
+        })
+
         query = "select distinct Team.Team_Id,Team.Team_Name from Team inner join \
                 Matches on (Team.Team_Id = Matches.Team_Name_Id or Team.Team_Id = Matches.Opponent_Team_Id) \
-                and Matches.Season_Id = "+season_id+" and Team.Team_Name = '"+team_name+"';"
+                and Matches.Season_Id = "+season_id+" and Team.Team_Short_Code like '"+team_short_name+'%'+"';"
         
+                
         connection.query(query,(err,result)=>{
             if(err) throw err;
             team_Id = result["0"]["Team_Id"]
@@ -190,7 +208,7 @@ module.exports = function(app,connection){
         connection.query(query,(err,result)=>{
             if(err) throw err;
             final_result['Performance'] = result;
-            //res.send(final_result);
+            res.send(final_result);
             
         });
         

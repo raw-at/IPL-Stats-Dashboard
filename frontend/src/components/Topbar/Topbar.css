@@ -1,0 +1,13 @@
+.Topbar{
+    height: 50px;
+    
+}
+a {
+    color: whitesmoke;
+}
+
+.Topbar h2{
+    margin: 0;
+    text-align: center;
+    padding-top: 6px;
+}
