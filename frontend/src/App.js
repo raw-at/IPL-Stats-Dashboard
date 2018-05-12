@@ -11,7 +11,7 @@ class App extends Component {
       <div className="App">
           <Switch>
             <Route path="/" exact component={Home} />
-            <Route path="/:date" exact component={DateStats} />
+            <Route path="/match/info/:date/:team_name_a/:team_name_b" exact component={DateStats} />
             <Route path="/:season_id/:team_name" exact component={Team} />
           </Switch>
       </div>

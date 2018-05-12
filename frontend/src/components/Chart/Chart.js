@@ -8,7 +8,7 @@ class Chart extends Component {
             // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             datasets: [{
             label: "Runs by "+this.props.team_Name,
-            type:'bar',
+            type:this.props.type,
             data: this.props.data_A,
             fill: false,
             borderColor: 'red',
@@ -19,7 +19,7 @@ class Chart extends Component {
             pointHoverBorderColor: 'rgba(255, 80, 80,0.8)',
             yAxisID: 'y-axis-2'
             },{
-            type: 'bar',
+            type: this.props.type,
             label: 'Runs by Opponent',
             data: this.props.data_B,
             fill: false,
@@ -47,6 +47,10 @@ class Chart extends Component {
             xAxes: [
               {
                 display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: this.props.x_label
+                },
                 gridLines: {
                   display: false
                 },
@@ -58,6 +62,10 @@ class Chart extends Component {
               {
                 type: 'linear',
                 display: true,
+                scaleLabel: {
+                  display: true,
+                  labelString: this.props.y_label
+                },
                 position: 'left',
                 id: 'y-axis-1',
                 gridLines: {

@@ -4,7 +4,11 @@ import {connect} from 'react-redux';
 import Chart from '../../components/Chart/Chart';
 import * as actionCreator from '../../store/actions/action';
 import Card from '../../components/BaseCard/BaseCard';
+import {Doughnut} from 'react-chartjs-2';
+import Spinner from '../../components/Spinner/Spinner';
+
 class Team extends Component {
+
     componentDidMount(){
         this.props.chartDataExtract(this.props.match.params['season_id'],this.props.match.params['team_name'])
     }
@@ -16,6 +20,7 @@ class Team extends Component {
         let opponent_runs = [];
         let matchBetween = [];
         let chart = null;
+        let winning_percentage = null;
         if(this.props.chartData){
             console.log(this.props.chartData)
             this.props.chartData.Performance.map(data=>{
@@ -35,35 +40,63 @@ class Team extends Component {
          opponent_team_data.map(data=>{
              opponent_runs.push(data.Score + data.Extra)
          })
-         console.log(team_runs);
-         console.log(opponent_runs);
-         console.log(matchBetween)
             this.chart= (
-            <Chart data_A={team_runs} data_B={opponent_runs} labels={matchBetween} team_Name={this.props.match.params['team_name']}/>
+            <Chart type="bar" data_A={team_runs} data_B={opponent_runs} labels={matchBetween} team_Name={this.props.match.params['team_name']}/>
                       
          )
+         winning_percentage = Math.floor((this.props.chartData.Total_Matches_Played-this.props.chartData.Lost_Matches)/(this.props.chartData.Total_Matches_Played)*100);
         }
         else{
-            this.chart = (<div className={classes.loader}>Loading...</div>)
+            this.chart = (<Spinner/>)
         }
         return (
             <div className={classes.ChartArea}>
                 <div className="container-fluid">
                     <div className="row">
-                        <h1 style={{"textAlign":"center"}}>Season Performance Graph </h1>
-                        <p style={{"textAlign":"center","font-size":"2em"}}>Team:{this.props.match.params['team_name']}</p>
+                        <h1 style={{"textAlign":"center"}}>Season {this.props.match.params['season_id']}</h1>
+                        <p style={{"textAlign":"center","font-size":"2em"}}> Performance Graph of : {this.props.match.params['team_name']}</p>
 
                     </div>
                     <div className="row" style={{"marginTop":"2%"}}>
-                        <div className="col-xs-12 col-sm-3">
-                        {this.props.chartData?<Card card_type="team_season_card"
-                             logo="https://seeklogo.com/images/I/ipl-kings-xi-punjab-logo-6747D5C02B-seeklogo.com.png"
-                             Total_Matches_Played={this.props.chartData.Total_Matches_Played}
-                             Win_Matches={this.props.chartData.Win_Matches}
-                             Lost_Matches={this.props.chartData.Lost_Matches}
-                        
-                        />:null}
-                        </div>
+                        {this.props.chartData?
+                            <div className="col-xs-12 col-sm-4">
+                                
+                              
+                                <div className={classes.leftChart}>
+                                <h1 style={{"textAlign":"center"}}>Win {winning_percentage} %</h1>
+                                <Doughnut 
+                                            data={{
+                                                labels: ['Match Won','Match Lost'],
+                                                datasets:[
+                                                {
+                                                    label:'Match Statistics',
+                                                    data:[
+                                                    this.props.chartData.Win_Matches,
+                                                    this.props.chartData.Lost_Matches,
+                                                    ],
+                                                    backgroundColor:[
+                                                    'rgba(255, 80, 80,0.8)',
+                                                    'rgba(0, 204, 255,0.8)'
+                                                    ]
+                                                }
+                                                ]
+                                        }}
+                                        
+                                            options={{
+                                                legend:{
+                                                display:true,
+                                                position:'bottom'
+                                                }
+                                    }}
+                                    />
+                                    </div><br />
+                                <Card card_type="team_season_card"
+                                    Total_Matches_Played={this.props.chartData.Total_Matches_Played}
+                                    Win_Matches={this.props.chartData.Win_Matches}
+                                    Lost_Matches={this.props.chartData.Lost_Matches}/>
+                                                
+                            
+            </div>:null}
                         <div className="col-xs-12 col-sm-8">
                             {this.chart}    
 

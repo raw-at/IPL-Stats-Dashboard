@@ -7,6 +7,7 @@ import DTabs from '../../components/DTabs/DTabs';
 import axios from 'axios';
 import {connect} from 'react-redux';
 import * as actionCreator from '../../store/actions/action';
+import Spinner from '../../components/Spinner/Spinner';
 class Home extends Component {
     
     componentWillMount(){
@@ -15,7 +16,8 @@ class Home extends Component {
     }
     render(){    
         console.log('props',this.props)
-        return (this.props.data?<div className="container-fluid">
+        return (this.props.data?<div className={classes.Home}>
+        <div className="container-fluid">
                 <div className="row">
                     {/*<div className="col-sm-2 col-xs-12">
                         <Sidebar />
@@ -30,7 +32,7 @@ class Home extends Component {
                             <BaseCard color="linear-gradient(to bottom, #66ffff 0%, #00ff99 100%)"  card_type="top_card" title="Total Matches" data={this.props.data.total_matches[0]["Total_Matches"]} url="https://upload.wikimedia.org/wikipedia/commons/a/a4/BAT_-_Election_Symbol.png"/>
                             <BaseCard color="linear-gradient(to bottom, #66ffff 0%, #00ccff 100%)"  card_type="top_card" title="Total Sixes" data={this.props.data.total_sixes[0]["Total_Sixes"]} url="http://webiconspng.com/wp-content/uploads/2017/09/6-PNG-Image-50813.png"/>
                             <BaseCard color="linear-gradient(to bottom, #ffff99 0%, #ff9966 100%)"  card_type="top_card" title="Total Fours" data={this.props.data.total_fours[0]["Total_Fours"]} url="http://pngimg.com/uploads/number4/number4_PNG15040.png"/>
-                            <BaseCard color="linear-gradient(to bottom, #ffcc66 0%, #ff0066 100%)"  card_type="top_card" title="Total Wickets" data={this.props.data.total_fours[0]["Total_Wickets"]} url="https://cdn2.iconfinder.com/data/icons/sports-fitness-line-vol-2/52/game__sports__Balls__sportsballs__cricket__ball__stumps-512.png"/>
+                            <BaseCard color="linear-gradient(to bottom, #ffcc66 0%, #ff0066 100%)"  card_type="top_card" title="Total Wickets" data={this.props.data.total_wickets[0]["total_wickets"]} url="https://cdn2.iconfinder.com/data/icons/sports-fitness-line-vol-2/52/game__sports__Balls__sportsballs__cricket__ball__stumps-512.png"/>
                             
                 
                         </div>
@@ -62,7 +64,7 @@ class Home extends Component {
                                             man_of_the_series={this.props.data.caps_and_man_of_series[0]["Man_of_the_Series"]}/>
 
                                 <BaseCard   color="linear-gradient(to top right, #99ff99 0%, #99ccff 100%)"
-                                            url="http://www.freelogovectors.net/wp-content/uploads/2018/04/chennai_super_kings_logo_freelogovectors.net_.png" card_type="overall_card" title="Winner/Final Match Info." 
+                                            url="https://vignette.wikia.nocookie.net/clubpenguin/images/d/de/Pizza_Eating_Contest_trophy.png/revision/latest?cb=20120924162215" card_type="overall_card" title="Winner/Final Match Info." 
                                             TeamA={this.props.data.finale_details[0]["Team_A"]}
                                             TeamB={this.props.data.finale_details[0]["Team_B"]} 
                                             Winner_team={this.props.data.finale_details[0]["Winner"]}
@@ -76,9 +78,9 @@ class Home extends Component {
                         </div>
                     
                     </div>
-                    
+                    </div>
                 </div>                
-            </div>:null)
+            </div>:<Spinner />)
             
            
     }

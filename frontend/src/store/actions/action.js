@@ -2,7 +2,7 @@ import axios from 'axios';
 export const DATA_EXTRACT = "DATA_EXTRACT";
 export const CHART_DATA_EXTRACT = "CHART_DATA_EXTRACT";
 export const DATE_WISE_DATA = 'DATE_WISE_DATA';
-
+export const PLAYER_DATA_EXTRACT = 'PLAYER_DATA_EXTRACT';
 
 export const dataExtract_Done = (data) => {
             
@@ -23,6 +23,13 @@ export const dateDataExtractor = (data) => {
     return {
         type:DATE_WISE_DATA,
         date_wise:data
+    };
+
+}
+export const playerDataExtractor = (data) => {
+    return {
+        type:PLAYER_DATA_EXTRACT,
+        player_data:data
     };
 
 }
@@ -48,9 +55,20 @@ export const chartDataExtract = (seasonId,teamShortCode) => {
 }
 
 export const dateDataExtract = (date) => {
+    console.log(date)
     return dispatch => {
-        axios.get('http://localhost:8000/'+date).then((response)=>{
+        axios.get('http://localhost:8000/match/info/'+date).then((response)=>{
             dispatch(dateDataExtractor(response.data))
+        })
+    }
+    
+}
+
+
+export const playerDataExtract = (season,player_name) => {
+    return dispatch => {
+        axios.get('http://localhost:8000/'+season+'/'+'player/'+player_name).then((response)=>{
+            dispatch(playerDataExtractor(response.data))
         })
     }
     
