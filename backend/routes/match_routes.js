@@ -16,6 +16,14 @@ module.exports = function(app,connection){
             //console.log(team_season_wise)
 
         });
+        query = "select Count(Ball_by_Ball.Player_dissimal_Id) as total_wickets from Ball_by_Ball inner join Matches \
+        on Ball_by_Ball.Match_Id = Matches.Match_Id where (Matches.Season_Id = 1 and Ball_by_Ball.Player_dissimal_Id !=0)";
+
+        connection.query(query,function(err,result){
+            if(err) throw err;
+            response['total_wickets'] = result;
+        })
+
         query = "select Player_Name as Man_of_the_Series,table_C.Purple_Cap,table_C.Orange_Cap from Player inner join\
         (select Player_Name as Purple_Cap,table_B.Orange_Cap,table_B.Man_of_the_Series_Id from Player inner join \
         (select Player_Name as Orange_Cap,table_A.Purple_Cap_Id,table_A.Man_of_the_Series_Id from Player inner join\
@@ -218,14 +226,33 @@ module.exports = function(app,connection){
     
     });
 
-    app.get('/:date',(req,res)=>{
+    app.get('/match/info/:date/:team_code_a/:team_code_b',(req,res)=>{
         var date = req.params.date;
+        var team_code = req.params.team_code_a;
+        var team_code_b = req.params.team_code_b
         var final_result = {};
-        query = "select Team.Team_Short_Code as TeamB,table_B.TeamA,table_B.Match_Date,table_B.Venue_Name \
+        var team_id = null;
+        query = "select Team_Id from Team where Team.Team_Short_Code like '"+team_code+'%'+"'"
+        
+        connection.query(query,(err,result)=>{
+            if(err) throw err;
+            team_id = result[0]['Team_Id']
+            
+            query = "select Sum(Ball_by_Ball.Batsman_Scored) as Batsman_Score,Sum(Ball_by_Ball.Extra_Runs) as Extra from Ball_by_Ball inner join \
+            (select Matches.Match_Id as Match_Id from Matches\
+             where Matches.Match_date = '"+date+"' and Matches.Team_Name_Id ="+team_id+" )\
+            as tableA on tableA.Match_Id = Ball_by_Ball.Match_Id \
+            where Ball_by_Ball.Innings_Id = 1 group by Over_Id;"
+            
+            connection.query(query,(err,result)=>{
+                if(err) throw err;
+                final_result["first_innings_over_wise"] = result;
+            })
+            query = "select Team.Team_Short_Code as TeamB,table_B.TeamA,table_B.Match_Date,table_B.Venue_Name \
                 from Team inner join (select Team.Team_Short_Code as TeamA,\
                 table_A.Match_Date,table_A.Opponent_Team_Id,table_A.Venue_Name\
                 from Team inner join (select Match_Date,Team_Name_Id,Opponent_Team_Id,Venue_Name \
-                from Matches where  Matches.Match_Date like '"+date+"') \
+                from Matches where  Matches.Match_Date like '"+date+"' and Matches.Team_Name_Id = "+team_id+") \
                 as table_A on Team.Team_Id = table_A.Team_Name_Id) as table_B on Team.Team_Id = table_B.Opponent_Team_Id;"
                 connection.query(query,(err,result)=>{
                     if(err) throw err;
@@ -238,27 +265,22 @@ module.exports = function(app,connection){
         query = "select Player.Player_Name as Man_of_the_Match ,f_table.Winner_Team,f_table.Win_Type,f_table.Won_By \
                 from Player inner join (select Team_Short_Code as Winner_Team,table_A.Win_Type,table_A.Won_By,table_A.Man_Of_The_Match_Id \
                 from Team inner join (select Match_Winner_Id,Win_Type,Won_By,Man_Of_The_Match_Id \
-                from Matches where  Matches.Match_Date like '"+date+"') as table_A on Team.Team_Id = table_A.Match_Winner_Id) \
+                from Matches where  Matches.Match_Date like '"+date+"' and Matches.Team_Name_Id = "+team_id+") as table_A on Team.Team_Id = table_A.Match_Winner_Id) \
                 as f_table on Player.Player_Id = f_table.Man_Of_The_Match_Id;"
-                        
+                console.log(query)    
                 connection.query(query,(err,result)=>{
                     if(err) throw err;
-                    if(result.length > 1){
-                        final_result["0"]["More_details"] = result[0];
-                        final_result["1"]["More_details"] = result[1];
                     
-                    }
-                    else{
-                        final_result["0"]["More_details"] = result[0];
+                    final_result["0"]["More_details"] = result[0];
                     
-                    }
+                    
                     //res.send(final_result);
                     
                 });
         query = "select table_C.Player_Name,table_C.Wickets,Team_Short_Code as Team From Team inner join \
                 (select Player_Name,table_B.Wickets,table_B.Team_Bowling_Id from Player inner join ( \
                 select Team_Bowling_Id,Bowler_Id,Count(Player_dissimal_Id) as Wickets from Ball_by_Ball inner join( \
-                select Match_Id from Matches where  Matches.Match_Date like '"+date+"')as table_A on \
+                select Match_Id from Matches where  Matches.Match_Date like '"+date+"'  and Matches.Team_Name_Id = "+team_id+")as table_A on \
                 Ball_by_Ball.Match_Id = table_A.Match_Id where (Player_dissimal_Id != 0 and Dissimal_Type != 'run out') \
                 group by Bowler_Id) as table_B \
                 on table_B.Bowler_Id = Player.Player_Id) as table_C on Team.Team_Id = table_C.Team_Bowling_Id;"
@@ -274,7 +296,7 @@ module.exports = function(app,connection){
         query = "select table_C.Player_Name,table_C.Score,Team_Short_Code as Team From Team inner join \
         (select Player_Name,table_B.Score,table_B.Team_Batting_Id from Player inner join ( \
         select Team_Batting_Id,Striker_Id,Sum(Batsman_Scored) as Score from Ball_by_Ball inner join  ( \
-        select Match_Id from Matches where  Matches.Match_Date like '"+date+"')as table_A on \
+        select Match_Id from Matches where  Matches.Match_Date like '"+date+"'  and Matches.Team_Name_Id = "+team_id+")as table_A on \
         Ball_by_Ball.Match_Id = table_A.Match_Id group by Striker_ID) as table_B  \
         on table_B.Striker_Id = Player.Player_Id) as table_C on Team.Team_Id = table_C.Team_Batting_Id;"
 
@@ -291,7 +313,7 @@ module.exports = function(app,connection){
         query = "select table_C.Player_Name,Max(table_C.Wickets) as Max_Wicket,table_C.Match_Id,Team_Short_Code as Team From Team inner join \
                 (select Player_Name,table_B.Match_Id,table_B.Wickets,table_B.Team_Bowling_Id from Player inner join ( \
                         select table_A.Match_Id,Team_Bowling_Id,Bowler_Id,Count(Player_dissimal_Id) as Wickets from Ball_by_Ball inner join( \
-                        select Match_Id from Matches where  Matches.Match_Date like '"+date+"')as table_A on \
+                        select Match_Id from Matches where  Matches.Match_Date like '"+date+"'  and Matches.Team_Name_Id = "+team_id+")as table_A on \
                         Ball_by_Ball.Match_Id = table_A.Match_Id where (Player_dissimal_Id != 0 and Dissimal_Type != 'run out') \
                         group by Bowler_Id) as table_B \
                         on table_B.Bowler_Id = Player.Player_Id order by Wickets desc) as table_C on Team.Team_Id = table_C.Team_Bowling_Id \
@@ -304,16 +326,36 @@ module.exports = function(app,connection){
 
         query = "select table_C.Player_Name,table_C.Match_Id,Max(table_C.Score) as Max_Score,Team_Short_Code as Team From Team inner join (select table_B.Match_Id,Player_Name,table_B.Score,table_B.Team_Batting_Id from Player inner join ( \
                     select table_A.Match_Id,Team_Batting_Id,Striker_Id,Sum(Batsman_Scored) as Score from Ball_by_Ball inner join  ( \
-                    select Match_Id from Matches where  Matches.Match_Date like '"+date+"')as table_A on \
+                    select Match_Id from Matches where  Matches.Match_Date like '"+date+"'  and Matches.Team_Name_Id = "+team_id+")as table_A on \
                     Ball_by_Ball.Match_Id = table_A.Match_Id group by Striker_ID) as table_B  \
                     on table_B.Striker_Id = Player.Player_Id order by Score desc)as table_C on Team.Team_Id = table_C.Team_Batting_Id group by table_C.Match_Id;"
 
             connection.query(query,(err,result)=>{
                 final_result["Best_Batting_Performace"] = result;
-                res.send(final_result)
+                
             });
 
 
+        })
+
+        query = "select Team_Id from Team where Team.Team_Short_Code like '"+team_code_b+'%'+"'"
+            connection.query(query,(err,result)=>{
+                if(err) throw err;
+                team_id = result[0]['Team_Id']
+                query = "select Sum(Ball_by_Ball.Batsman_Scored) as Batsman_Score,Sum(Ball_by_Ball.Extra_Runs) as Extra from Ball_by_Ball inner join \
+                (select Matches.Match_Id as Match_Id from Matches \
+                 where Matches.Match_date = '"+date+"' and Matches.Opponent_Team_Id = "+team_id+" ) \
+                as tableA on tableA.Match_Id = Ball_by_Ball.Match_Id where Ball_by_Ball.Innings_Id = 2 group by Over_Id;"
+                    
+                connection.query(query,(err,result)=>{
+
+                    if(err) throw err;
+                    final_result["second_innings_over_wise"] = result;
+                    res.send(final_result)    
+                })
+            
+            
+            })
         })
 
 
