@@ -5,6 +5,10 @@ import * as actionCreator from '../../store/actions/action';
 import Card from '../../components/BaseCard/BaseCard';
 import Chart from '../../components/Chart/Chart';
 class DateStats extends Component {
+
+
+   
+
     componentDidMount(){
         const data_url = this.props.match.params.date+'/'+
                     this.props.match.params.team_name_a+'/'+this.props.match.params.team_name_b
@@ -111,7 +115,15 @@ class DateStats extends Component {
         return (<div className={classes.DateStats}>
                     <div className="container-fluid">
                         <div className="row">
-                            <h1 style={{"color":"coral","textAlign":"center"}}>Date Wise Team Performance</h1>
+                            <div className={classes.Back}>
+                                <div className="col-sm-1" style={{"margin-top":"1%"}}>
+                                <i className="fa fa-4x fa-chevron-circle-left" onClick={()=>this.props.history.goBack()}></i>
+                                </div>
+                            </div>
+                            
+                            <div className="col-sm-11">
+                                <h1 style={{"color":"coral","textAlign":"center"}}>Date Wise Team Performance</h1>
+                            </div>
                             
                         </div>
                         <div className="row" style={{"margin-top":"1%"}}>

@@ -12,16 +12,14 @@ class Topbar extends Component  {
                     <div className="container-fluid">
                         <div className="navbar-header">
                         <button   type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                            <span style={{"color":"red"}} className="icon-bar"></span>
-                            <span style={{"color":"grey"}} className="icon-bar"></span>
-                            <span style={{"color":"grey"}} className="icon-bar"></span>
+                            <i style={{"color":"white","position":"relative","top":"-6px"}} class="fa fa-2x fa-align-justify"></i>
                         </button>
                         <a className="navbar-brand" href="#">IPL Dashboard</a>
                         </div>
                         <div className="collapse navbar-collapse" id="myNavbar">
                         <ul className="nav navbar-nav">
                             <li className="dropdown">
-                            <a className="dropdown-toggle" data-toggle="dropdown" href="#">Seasons&nbsp;
+                            <a className="dropdown-toggle" data-toggle="dropdown" style={{"background":"#333333"}}>Seasons&nbsp;
                             <span className="caret"></span></a>
                             <ul className="dropdown-menu"  style={{"background":"linear-gradient(to bottom right, #ffffff 0%, #ccffff 74%)","cursor":"pointer"}}>
                             <li><a onClick={this.props.getSeasonData.bind(this,'1')}>Season 1</a></li>

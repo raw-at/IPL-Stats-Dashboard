@@ -4,3 +4,12 @@
 table{
     background: linear-gradient(to bottom right, #99ccff 0%, #6666ff 100%);
 }
+
+.Back{
+    color:grey;
+    transition: 0.3s;
+    
+  }
+  .Back:hover{
+    color:white
+  }

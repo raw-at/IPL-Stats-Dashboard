@@ -33,6 +33,11 @@ class Chart extends Component {
             
             const options = {
             responsive: true,
+            legend: {
+              labels: {
+                   fontColor: 'white'
+                  }
+               },
             labels:this.props.labels,
             tooltips: {
             mode: 'label'
@@ -47,12 +52,14 @@ class Chart extends Component {
             xAxes: [
               {
                 display: true,
+                ticks:{fontColor:'white'},
                 scaleLabel: {
                   display: true,
-                  labelString: this.props.x_label
+                  labelString: this.props.x_label,
+                  fontColor:'white'
                 },
                 gridLines: {
-                  display: false
+                  display: true
                 },
             
                 labels:this.props.labels,
@@ -62,9 +69,11 @@ class Chart extends Component {
               {
                 type: 'linear',
                 display: true,
+                ticks:{fontColor:'white'},
                 scaleLabel: {
                   display: true,
-                  labelString: this.props.y_label
+                  labelString: this.props.y_label,
+                  fontColor:'white',
                 },
                 position: 'left',
                 id: 'y-axis-1',
@@ -92,11 +101,6 @@ class Chart extends Component {
             }
             };
             
-           const plugins = [{
-            afterDraw: (chartInstance, easing) => {
-            const ctx = chartInstance.chart.ctx;
-            }
-            }];
           
        
         console.log(this.props.data)
@@ -105,7 +109,6 @@ class Chart extends Component {
                 <Bar 
                     data = {data}
                     options={options}
-                    plugins={plugins}
                 
                 />
             

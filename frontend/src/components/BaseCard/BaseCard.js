@@ -12,6 +12,7 @@ class BaseCard extends Component  {
         team_player:null,
         matchDate:"18-Apr-08/RCB",
         get_clicked:false,
+        disabled:true,
     } 
     selectHandler =(event)=> {
         this.setState({selectTeamForPlayer:event.target.value,team_select:false});
@@ -46,7 +47,7 @@ class BaseCard extends Component  {
     }
 
     backButton = () => {
-            this.setState({get_clicked:false})
+            this.setState({get_clicked:false,selectTeamForPlayer:null})
     }
     render(){
         let card = null;
@@ -63,6 +64,7 @@ class BaseCard extends Component  {
     
             card = (
                 <div>
+                    <img src={this.props.url} />
                     <h4><b style={{"color":"orange"}}>Orange Cap: <span >{this.props.orange_cap}</span></b></h4>
                     <h4><b style={{"color":"purple"}}>Purple Cap: <span>{this.props.purple_cap}</span></b></h4>
                     <h4><b style={{"color":"black"}}>Man of The Series: <span>{this.props.man_of_the_series}</span></b></h4>
@@ -113,7 +115,7 @@ class BaseCard extends Component  {
                                     })}
                                 </select>
                                 <br />
-                                <input type="submit" class="btn btn-warning" value="Get Result" onClick={this.playerInfoHandler}/>
+                                    <input type="submit" disabled={!this.state.selectTeamForPlayer}className="btn btn-warning" value="Get Result" onClick={this.playerInfoHandler}/>
                             </div> 
                     </div>
                 ):

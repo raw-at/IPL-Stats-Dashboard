@@ -58,7 +58,8 @@ class Home extends Component {
                       
                             <div className={classes.Center_Grid}>
                             
-                                <BaseCard   color="linear-gradient(to top left, #99ff99 0%, #ffffcc 100%)"
+                                <BaseCard   url="http://www.clker.com/cliparts/K/v/R/c/k/c/baseball-cap-red-md.png"
+                                            color="linear-gradient(to top left, #99ff99 0%, #ffffcc 100%)"
                                             card_type="center_caps_card" orange_cap={this.props.data.caps_and_man_of_series[0]["Orange_Cap"]} 
                                             purple_cap={this.props.data.caps_and_man_of_series[0]["Purple_Cap"]}
                                             man_of_the_series={this.props.data.caps_and_man_of_series[0]["Man_of_the_Series"]}/>

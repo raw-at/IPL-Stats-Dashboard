@@ -8,7 +8,12 @@ import {Doughnut} from 'react-chartjs-2';
 import Spinner from '../../components/Spinner/Spinner';
 
 class Team extends Component {
-
+    state = {
+        team_color:{
+            'csk':'yellow',
+            'rcb':'red'
+        }
+    }
     componentDidMount(){
         this.props.chartDataExtract(this.props.match.params['season_id'],this.props.match.params['team_name'])
     }
@@ -21,6 +26,7 @@ class Team extends Component {
         let matchBetween = [];
         let chart = null;
         let winning_percentage = null;
+
         if(this.props.chartData){
             console.log(this.props.chartData)
             this.props.chartData.Performance.map(data=>{
@@ -41,7 +47,8 @@ class Team extends Component {
              opponent_runs.push(data.Score + data.Extra)
          })
             this.chart= (
-            <Chart type="bar" data_A={team_runs} data_B={opponent_runs} labels={matchBetween} team_Name={this.props.match.params['team_name']}/>
+            <Chart  y_label='Score' x_label={this.props.match.params['team_name']+' vs Others'} 
+                    type="bar" data_A={team_runs} data_B={opponent_runs} labels={matchBetween} team_Name={this.props.match.params['team_name']}/>
                       
          )
          winning_percentage = Math.floor((this.props.chartData.Total_Matches_Played-this.props.chartData.Lost_Matches)/(this.props.chartData.Total_Matches_Played)*100);
@@ -53,9 +60,18 @@ class Team extends Component {
             <div className={classes.ChartArea}>
                 <div className="container-fluid">
                     <div className="row">
-                        <h1 style={{"textAlign":"center"}}>Season {this.props.match.params['season_id']}</h1>
-                        <p style={{"textAlign":"center","font-size":"2em"}}> Performance Graph of : {this.props.match.params['team_name']}</p>
-
+                        <div className={classes.Team}>
+                            <div className="col-sm-1" style={{"margin-top":"2%"}}>
+                            <i className="fa fa-4x fa-chevron-circle-left" onClick={()=>this.props.history.goBack()}></i>
+                            </div>
+                        </div>
+                        <div class="col-sm-11">
+                            <h1 style={{"textAlign":"center"}}>Season {this.props.match.params['season_id']}</h1>
+                            <p style={{"textAlign":"center","font-size":"2em"}}> Performance Graph of : {this.props.match.params['team_name']}</p>
+                            
+                        </div>
+                        
+                        
                     </div>
                     <div className="row" style={{"marginTop":"2%"}}>
                         {this.props.chartData?
