@@ -6,11 +6,16 @@ IPL Dasboard depecits all the data from IPL Season 1 (2008) - IPL Season 8(2016)
 
 In This Approach I can easily modify the table as per my own need and can show it to the front-end.I didn't follow this approach as this is not the right approach for scalable applications.
 
+![img_7289](https://user-images.githubusercontent.com/20211990/40013296-cae6a5ec-57ca-11e8-8ee8-a89ce1b6c1f4.jpg)
+
+
 2. Back-End with Restful API'S :
 
 This is the right approch to tackle these kinds of tasks in production also i created the backend Api's using node.js and express.js
 and make them available to front-end.Front-end can now easily access the database's data using these Api's.This approach is highly
 scalable and robust.
+
+![img_7290](https://user-images.githubusercontent.com/20211990/40013337-dff512b6-57ca-11e8-891e-f797158687da.jpg)
 
 
 ### Front-End Specifications :
