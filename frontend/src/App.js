@@ -24,7 +24,6 @@ class App extends Component {
             <Route path="/" exact component={Home}  />
             <Route path="/match/info/:date/:team_name_a/:team_name_b" exact component={AsyncDateStats}/>
             <Route path="/:season_id/:team_name" exact component={AsyncTeam} />
-            <Route component={Error}/>
             
           </Switch>
       </div>
