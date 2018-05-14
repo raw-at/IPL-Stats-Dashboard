@@ -4,8 +4,7 @@ IPL Dasboard depecits all the data from IPL Season 1 (2008) - IPL Season 8(2016)
 ### Approach For The Task
 1. No Back-End : 
 
-In This Approach I can easily modify the table as per my own need and can show it to the front-end.I didn't follow this approach as 
-this is not the right approch as this approch is not scable and highly static in nature.
+In This Approach I can easily modify the table as per my own need and can show it to the front-end.I didn't follow this approach as this is not the right approach for scalable applications.
 
 2. Back-End with Restful API'S :
 
