@@ -34,7 +34,8 @@ class DateStats extends Component {
         if(this.props.dateData){
             url_team_name  = this.props.match.params.team_name_a;
 
-            card = (<div><Card card_type="date_wise_detail" color="linear-gradient(to bottom, #3366ff 0%, #ccff66 100%)" match_date={this.props.dateData[0]['Match_Date']} teamA={this.props.dateData[0].TeamA}
+            card = (<div><Card card_type="date_wise_detail" color="linear-gradient(to bottom, #3366ff 0%, #ccff66 100%)" 
+                            match_date={this.props.dateData[0]['Match_Date']} teamA={this.props.dateData[0].TeamA}
                             teamB={this.props.dateData[0].TeamB} venue = {this.props.dateData[0].Venue_Name} /></div>)
 
             more_info_card = (<div><Card color="linear-gradient(to top, #3366ff 0%, #ccff66 100%)" card_type="more_info" data={this.props.dateData[0].More_details}/></div>)
@@ -126,12 +127,21 @@ class DateStats extends Component {
                             </div>
                             
                         </div>
-                        <div className="row" style={{"margin-top":"1%"}}>
-                            <div className="col-xs-12 col-sm-2" 
-                                style={{"display":"grid","grid-template-columns":"1fr","grid-gap":"2%"}}>
-                                    
-                                    {card}<br />
-                                    {more_info_card} 
+                        <div className="row">
+                            <div className="col-xs-12 col-sm-2" >
+                                        <div className="row" style={{"margin-top":"1%"}}>
+                                            <div className="col-xs-12">
+                                                {card}
+                                            </div>
+                                        </div>
+                                        
+                                        <div className="row" style={{"margin-top":"1%"}}>
+                                            <div className="col-xs-12">
+                                                {more_info_card}
+                                            </div>
+                                        </div>
+                                        
+                                     
                                
                             </div>
                             <div className="col-xs-12 col-sm-10">

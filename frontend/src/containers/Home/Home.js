@@ -29,47 +29,45 @@ class Home extends Component {
         return (<div className={classes.Home}>
         <div className="container-fluid">
                 <div className="row">
-                    {/*<div className="col-sm-2 col-xs-12">
-                        <Sidebar />
-                    </div>*/
-                    }
                      <Topbar />
+                </div>
                     
+                <div className="row">
                     {this.props.data?
                     <div className="col-sm-12 col-xs-12">
                         <div className="row">
 
-                            <div className="col-sm-2 col-xs-12 col-sm-push-1">
+                            <div className="col-sm-2 col-xs-12 col-sm-push-1" style={{"marginTop":"1%"}}>
                                 <BaseCard color="linear-gradient(to bottom, #66ff99 0%, #00ff99 100%)" card_type="top_card" title="Current Season" data={this.props.data.Season} url={Logo}/>
                             </div>
-                            <div className="col-sm-2 col-xs-12 col-sm-push-1">
+                            <div className="col-sm-2 col-xs-12 col-sm-push-1" style={{"marginTop":"1%"}}>
                                 <BaseCard color="linear-gradient(to bottom, #66ffff 0%, #00ff99 100%)"  card_type="top_card" title="Total Matches" data={this.props.data.total_matches[0]["Total_Matches"]} url={Bat}/>
                             </div>
-                            <div className="col-sm-2 col-xs-12 col-sm-push-1">
+                            <div className="col-sm-2 col-xs-12 col-sm-push-1" style={{"marginTop":"1%"}}>
                                 <BaseCard color="linear-gradient(to bottom, #66ffff 0%, #00ccff 100%)"  card_type="top_card" title="Total Sixes" data={this.props.data.total_sixes[0]["Total_Sixes"]} url={Six}/>
                             </div>
-                            <div className="col-sm-2 col-xs-12 col-sm-push-1">
+                            <div className="col-sm-2 col-xs-12 col-sm-push-1" style={{"marginTop":"1%"}}>
                                 <BaseCard color="linear-gradient(to bottom, #ffff99 0%, #ff9966 100%)"  card_type="top_card" title="Total Fours" data={this.props.data.total_fours[0]["Total_Fours"]} url={Four}/>
                             </div>
-                            <div className="col-sm-2 col-xs-12 col-sm-push-1">
+                            <div className="col-sm-2 col-xs-12 col-sm-push-1" style={{"marginTop":"1%"}}>
                                 <BaseCard color="linear-gradient(to bottom, #ffcc66 0%, #ff0066 100%)"  card_type="top_card" title="Total Wickets" data={this.props.data.total_wickets[0]["total_wickets"]} url={Ball}/>
                             </div>
                         </div>
 
-                        <div className="row" style={{"margin-top":"1%"}}>
-                            <div className='col-xs-12 col-sm-4'>
+                        <div className="row">
+                            <div className='col-xs-12 col-sm-4' style={{"marginTop":"1%"}}>
                                 <BaseCard   color="linear-gradient(to bottom left, #e0e0e0 0%, #ffcc99 100%)"
                                             card_type="team_performance"
                                             data={this.props.data.team_season_wise}/>
                                 
                             </div>
-                            <div className='col-xs-12 col-sm-4'>
+                            <div className='col-xs-12 col-sm-4' style={{"marginTop":"1%"}}>
                                 <BaseCard   color="linear-gradient(to bottom right, #e0e0e0 0%, #ffcc99 100%)"
                                             card_type="player_info"
                                             data ={this.props.data.team_wise_player_name}
                                             team={this.props.data.team_season_wise}/>
                             </div>
-                            <div className='col-xs-12 col-sm-4'>
+                            <div className='col-xs-12 col-sm-4' style={{"marginTop":"1%"}}>
                                 <BaseCard   color="linear-gradient(to top right, #e0e0e0 0%, #ffcc99 100%)"
                                         card_type="date_wise_performance"
                                         data ={this.props.data.date_wise_match_with_team_name}/>
@@ -78,8 +76,8 @@ class Home extends Component {
                                      
                         </div>
                        
-                        <div className="row" style={{"margin-top":"1%"}}>
-                            <div className="col-xs-12 col-sm-5 col-sm-push-1">
+                        <div className="row">
+                            <div className="col-xs-12 col-sm-5 col-sm-push-1"  style={{"marginTop":"0.5%",}}>
                                 <BaseCard   url={Win}
                                                 color="linear-gradient(to top left, #99ff99 0%, #ffffcc 100%)"
                                                 card_type="center_caps_card" orange_cap={this.props.data.caps_and_man_of_series[0]["Orange_Cap"]} 
@@ -87,7 +85,7 @@ class Home extends Component {
                                                 man_of_the_series={this.props.data.caps_and_man_of_series[0]["Man_of_the_Series"]}/>
 
                             </div>
-                            <div className="col-xs-12 col-sm-5 col-sm-push-1">
+                            <div className="col-xs-12 col-sm-5 col-sm-push-1" style={{"marginTop":"0.5%"}}>
                                 <BaseCard   color="linear-gradient(to top right, #99ff99 0%, #99ccff 100%)" card_type="overall_card"
                                                 url={Win} card_type="overall_card" title="Winner/Final Match Info." 
                                                 TeamA={this.props.data.finale_details[0]["Team_A"]}

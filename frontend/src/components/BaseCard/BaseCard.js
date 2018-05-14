@@ -14,6 +14,7 @@ class BaseCard extends Component  {
         matchDate:"18-Apr-08/RCB",
         get_clicked:false,
         disabled:true,
+        test:true
     } 
     selectHandler =(event)=> {
         this.setState({selectTeamForPlayer:event.target.value,team_select:false});
@@ -87,7 +88,7 @@ class BaseCard extends Component  {
             {!this.state.get_clicked?
                 card = (
                     <div>
-                        <h3 style={{"fontWeight":"bold","textAlign":"center","padding-top":"4px","padding-left":"30px"}}>PLAYER PERFORMANCE</h3>
+                        <h3 style={{"fontWeight":"bold","textAlign":"center","paddingTop":"4px","paddingLeft":"30px"}}>PLAYER PERFORMANCE</h3>
                             <div className="form-group">
                                 <label htmlFor="sel1">Select Team:</label>
                                 <select className="form-control" id="sel1" onChange={this.selectHandler}>
@@ -106,7 +107,7 @@ class BaseCard extends Component  {
                                 </select>
                             
                                 <label htmlFor="sel2">Select Player:</label>
-                                <select class="form-control" id="sel2" disabled={this.state.team_select} onChange={this.playerSelectHandler}>
+                                <select className="form-control" id="sel2" disabled={this.state.team_select} onChange={this.playerSelectHandler}>
                                     
                                     {this.props.data.map(player=>{
                                         if(player.Team_Name == this.state.selectTeamForPlayer){
@@ -120,20 +121,22 @@ class BaseCard extends Component  {
                     </div>
                 ):
                 card = (
-                    <div style={{"padding-top":"3px","padding-left":"30px"}} >
+                    <div>
                         {this.props.playerData?
                             <div>
-                                <h3><b>Player Name : {this.state.team_player}</b></h3>
+                                <h2><b>Player Name : {this.state.team_player}</b></h2>
                                 <h5><b>Batting Skill : {this.props.playerData[0].Batting_Hand}</b></h5>
                                 <h5><b>Bowling Skill : {this.props.playerData[0].Bowling_Skill}</b></h5>
                                 <h5><b>Total Runs Scored : {this.props.playerData[0].Total_Runs}</b></h5>
                                 <h5><b>Total Wickets Taken : {this.props.playerData[0].Total_Wickets}</b></h5>
+                                <br />
                                 <button className="btn btn-success" onClick={this.backButton}><i class="fa fa-arrow-left"></i>Back</button>
                                 
                             </div>
-                            :
-                            <div style={{"padding":"40px"}}>
-                                    <Spinner />
+                            :<div>
+                                    <h1>Fetching Player Info...</h1>
+                                    <div className="loader">Loading...</div>
+
                             </div>}
                     </div>
                 )
@@ -194,10 +197,10 @@ class BaseCard extends Component  {
         }
 
         else if (this.props.card_type == 'date_wise_detail'){
-            card = (<div style={{"color":"white"}}>
-                        <h3 style={{"textAlign":"center","color":"black"}}><b>Date: <br />{this.props.match_date}</b></h3>
+            card = (<div style={{"color":"white","padding":"4%"}} >
+                        <h3 style={{"color":"black"}}><b>Date: {this.props.match_date}</b></h3>
                         <h4 style={{"textAlign":"center"}}><b>{this.props.teamA + ' vs ' + this.props.teamB}</b></h4>
-                        <h4 style={{"textAlign":"center"}}><b><span style={{"color":"black"}}>Venue</span> <br />{this.props.venue}</b></h4>
+                        <p><b><span style={{"color":"black"}}>Venue: </span>{this.props.venue}</b></p>
                     </div>)
         }
 

@@ -6,8 +6,7 @@ class Topbar extends Component  {
 
     render(){
         return (
-            <div className={classes.Topbar}>
-     
+            
                  <nav className="navbar">
                     <div className="container-fluid">
                         <div className="navbar-header">
@@ -37,8 +36,7 @@ class Topbar extends Component  {
                         </ul>
                         </div>
                     </div>
-                </nav>                
-            </div>
+                </nav>
         )
             
     }
