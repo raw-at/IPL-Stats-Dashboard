@@ -12,11 +12,6 @@ This is the right approch to tackle these kinds of tasks in production also i cr
 and make them available to front-end.Front-end can now easily access the database's data using these Api's.This approach is highly
 scalable and robust.
 
-Only Problem occur here is that data which is required is highly relational and kaggle csv files provided are not is right format which is need to show the exact information, that's why data extraction is little difficult with
-api's as query for data exctration are highly depend upon "DATABASE JOINS" that's why apps responses a little slow due to database query setbacks.
-This can be improved by filling the database with the exact related files and by exploring the data files before saving to the database.
-
-
 
 ### Front-End Specifications :
 Framework : React.js 
