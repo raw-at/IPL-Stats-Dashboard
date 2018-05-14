@@ -2,11 +2,13 @@
 IPL Dasboard depecits all the data from IPL Season 1 (2008) - IPL Season 8(2016) in graphical format using cards and graphs.
 
 ### Approach For The Task
-1. No Back-End 
+1. No Back-End : 
+
 In This Approach I can easily modify the table as per my own need and can show it to the front-end.I didn't follow this approach as 
 this is not the right approch as this approch is not scable and highly static in nature.
 
-2. Back-End with Restful API'S 
+2. Back-End with Restful API'S :
+
 This is the right approch to tackle these kinds of tasks in production also i created the backend Api's using node.js and express.js
 and make them available to front-end.Front-end can now easily access the database's data using these Api's.This approach is highly
 scalable and robust.
