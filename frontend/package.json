@@ -1,4 +1,5 @@
 {
+  "homepage": "http://raw-at.github.io/ipl-dashboard",
   "name": "frontend",
   "version": "0.1.0",
   "private": true,
@@ -57,7 +58,8 @@
   "scripts": {
     "start": "node scripts/start.js",
     "build": "node scripts/build.js",
-    "test": "node scripts/test.js --env=jsdom"
+    "test": "node scripts/test.js --env=jsdom",
+    "deploy": "gh-pages -d build"
   },
   "jest": {
     "collectCoverageFrom": [
@@ -100,5 +102,8 @@
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "devDependencies": {
+    "gh-pages": "^1.1.0"
   }
 }

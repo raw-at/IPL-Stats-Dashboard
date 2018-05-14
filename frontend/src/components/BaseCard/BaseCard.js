@@ -3,6 +3,7 @@ import classes from './BaseCard.css';
 import {Redirect,withRouter} from 'react-router-dom';
 import {connect} from 'react-redux';
 import * as actionCreator from '../../store/actions/action';
+import Spinner from '../Spinner/Spinner';
 
 class BaseCard extends Component  {
     state={
@@ -42,7 +43,6 @@ class BaseCard extends Component  {
 
     getMatchInfo = () => {
         const url = '/match/info/'+this.state.matchDate;
-        console.log(url)
         this.props.history.push(url);
     }
 
@@ -65,9 +65,9 @@ class BaseCard extends Component  {
             card = (
                 <div>
                     <img src={this.props.url} />
-                    <h4><b style={{"color":"orange"}}>Orange Cap: <span >{this.props.orange_cap}</span></b></h4>
-                    <h4><b style={{"color":"purple"}}>Purple Cap: <span>{this.props.purple_cap}</span></b></h4>
-                    <h4><b style={{"color":"black"}}>Man of The Series: <span>{this.props.man_of_the_series}</span></b></h4>
+                    <h4 style={{"color":"orange","textAlign":"center"}}><b>Orange Cap : {this.props.orange_cap}</b></h4>
+                    <h4 style={{"color":"purple","textAlign":"center"}}><b>Purple Cap : {this.props.purple_cap}</b></h4>
+                    <h4  style={{"color":"black","textAlign":"center"}}><b>Man of The Series : {this.props.man_of_the_series}</b></h4>
                 </div>
             )
         }
@@ -87,12 +87,12 @@ class BaseCard extends Component  {
             {!this.state.get_clicked?
                 card = (
                     <div>
-                        <h3 style={{"fontWeight":"bold","textAlign":"center"}}>PLAYER PERFORMANCE</h3>
+                        <h3 style={{"fontWeight":"bold","textAlign":"center","padding-top":"4px","padding-left":"30px"}}>PLAYER PERFORMANCE</h3>
                             <div className="form-group">
-                                <label for="sel1">Select Team:</label>
-                                <select class="form-control" id="sel1" onChange={this.selectHandler}>
+                                <label htmlFor="sel1">Select Team:</label>
+                                <select className="form-control" id="sel1" onChange={this.selectHandler}>
                                    if(this.state.team_select){
-                                       <option><hr /></option>
+                                       <option></option>
                                    }
                                    else{this.props.team.map((player,index)=>{
                                         return <option key={index} 
@@ -105,7 +105,7 @@ class BaseCard extends Component  {
                                 
                                 </select>
                             
-                                <label for="sel2">Select Player:</label>
+                                <label htmlFor="sel2">Select Player:</label>
                                 <select class="form-control" id="sel2" disabled={this.state.team_select} onChange={this.playerSelectHandler}>
                                     
                                     {this.props.data.map(player=>{
@@ -115,23 +115,26 @@ class BaseCard extends Component  {
                                     })}
                                 </select>
                                 <br />
-                                    <input type="submit" disabled={!this.state.selectTeamForPlayer}className="btn btn-warning" value="Get Result" onClick={this.playerInfoHandler}/>
+                                    <input type="submit" disabled={!(this.state.selectTeamForPlayer && this.state.team_player)}className="btn btn-warning" value="Get Result" onClick={this.playerInfoHandler}/>
                             </div> 
                     </div>
                 ):
                 card = (
-                    <div>
+                    <div style={{"padding-top":"3px","padding-left":"30px"}} >
                         {this.props.playerData?
                             <div>
                                 <h3><b>Player Name : {this.state.team_player}</b></h3>
-                                <h4><b>Batting Skill : {this.props.playerData[0].Batting_Hand}</b></h4>
-                                <h4><b>Bowling Skill : {this.props.playerData[0].Bowling_Skill}</b></h4>
-                                <h4><b>Total Runs Scored : {this.props.playerData[0].Total_Runs}</b></h4>
-                                <h4><b>Total Wickets Taken : {this.props.playerData[0].Total_Wickets}</b></h4>
+                                <h5><b>Batting Skill : {this.props.playerData[0].Batting_Hand}</b></h5>
+                                <h5><b>Bowling Skill : {this.props.playerData[0].Bowling_Skill}</b></h5>
+                                <h5><b>Total Runs Scored : {this.props.playerData[0].Total_Runs}</b></h5>
+                                <h5><b>Total Wickets Taken : {this.props.playerData[0].Total_Wickets}</b></h5>
                                 <button className="btn btn-success" onClick={this.backButton}><i class="fa fa-arrow-left"></i>Back</button>
                                 
                             </div>
-                            :null}
+                            :
+                            <div style={{"padding":"40px"}}>
+                                    <Spinner />
+                            </div>}
                     </div>
                 )
             }
@@ -140,48 +143,51 @@ class BaseCard extends Component  {
         else if(this.props.card_type == "date_wise_performance"){
             
             card = (<div>
-                     <h3 style={{"fontWeight":"bold","textAlign":"center"}}>DATE WISE MATCH PERFORMANCE</h3>
+                     <h3 style={{"fontWeight":"bold","textAlign":"center"}}>DATE WISE PERFORMANCE</h3>
+                        <br />
                         <div className="form-group">
-                            <label for="sel1">Select Date:</label>
+                            <label htmlFor="sel1">Select Date:</label>
                             <select onChange = {this.dateHandler}
-                                 class="form-control" id="sel1">
+                                 className="form-control" id="sel1">
                             {this.props.data.map(match=>{
-                                return <option key={match['Match_Date']} value={match['Match_Date']+'/'+match['TeamA']+'/'+match['TeamB']}>
+                                return <option key={match['Match_Date']+match['TeamA']} value={match['Match_Date']+'/'+match['TeamA']+'/'+match['TeamB']}>
                                     {match['Match_Date']+' '+match['TeamA']+' VS '+match['TeamB']}
                                 </option>
                             })}
                             
                             </select>
-                            <br />
-                            <input type="submit" class="btn btn-primary" value="Get Result"  onClick={this.getMatchInfo}/>
+                            <br /> <br />
+                            <input type="submit" className="btn btn-primary" value="Get Result"  onClick={this.getMatchInfo}/>
                         </div> 
                 
             </div>)
         }
         else if(this.props.card_type == 'team_performance'){
             card = (<div>
-    
-                <h3 style={{"fontWeight":"bold","textAlign":"center"}}>TEAM PERFORMANCE</h3>
+                    <h3 style={{"fontWeight":"bold","textAlign":"center"}}>TEAM WISE PERFORMANCE</h3>
+                <br />
                         <div className="form-group">
-                            <label for="sel1">Select Team:</label>
-                            <select class="form-control" id="sel1" onChange={this.selectTeamHandler}>
+                            <label htmlFor="sel1">Select Team:</label>
+                            <select className="form-control" id="sel1" onChange={this.selectTeamHandler}>
                                 {this.props.data.map(team=>{
                                     return <option key={team['Team_Name_Id']} value={team['Team_Short_Code']}>
                                         {team['Team_Name']}
                                         </option>
                                 })}
                                 
-                            </select><br />
-                            <input type="submit" class="btn btn-success" value="Get Result" onClick={this.teamHandler}/>
+                            </select><br /><br />
+                            <input type="submit" className="btn btn-success" value="Get Result" onClick={this.teamHandler}/>
+                            <br />
+                
                         </div> 
             </div>)
         }
         else if (this.props.card_type == 'team_season_card'){
-            card = (<div style={{"color":"white"}}>
+            card = (<div style={{"color":"white","padding":"5%"}}>
                     <img src={this.props.logo} />
-                    <h4><b>Total Match Played: {this.props.Total_Matches_Played}</b></h4>
-                    <h4><b>Total Match Won: {this.props.Win_Matches}</b></h4>
-                    <h4><b>Total Match Lost: {this.props.Lost_Matches}</b></h4>
+                    <h3><b>Total Match Played: {this.props.Total_Matches_Played}</b></h3>
+                    <h3><b>Total Match Won: {this.props.Win_Matches}</b></h3>
+                    <h3><b>Total Match Lost: {this.props.Lost_Matches}</b></h3>
    
 
             </div>)

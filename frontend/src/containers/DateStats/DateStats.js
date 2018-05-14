@@ -4,6 +4,7 @@ import {connect} from 'react-redux';
 import * as actionCreator from '../../store/actions/action';
 import Card from '../../components/BaseCard/BaseCard';
 import Chart from '../../components/Chart/Chart';
+import Spinner from '../../components/Spinner/Spinner';
 class DateStats extends Component {
 
 
@@ -16,7 +17,6 @@ class DateStats extends Component {
              
     }
     render(){
-        console.log(this.props.dateData)
         let card = null;
         let more_info_card = null;
         let batting_table_A = null;
@@ -112,7 +112,7 @@ class DateStats extends Component {
             })
 
         }
-        return (<div className={classes.DateStats}>
+        return (this.props.dateData?<div className={classes.DateStats}>
                     <div className="container-fluid">
                         <div className="row">
                             <div className={classes.Back}>
@@ -137,7 +137,7 @@ class DateStats extends Component {
                             <div className="col-xs-12 col-sm-10">
 
 {/*---------------------*/}
- <ul className="nav nav-tabs">
+ <ul className="nav nav-tabs" style={{"margin-left":"15%","margin-top":"5%"}}>
                 <li className="active"><a data-toggle="tab" href="#home">Batting Statistics of {TeamA}</a></li>
                 <li><a data-toggle="tab" href="#menu1">Batting Statistics of {TeamB}</a></li>
                 <li><a data-toggle="tab" href="#menu2">Bowling Statistics</a></li>
@@ -198,7 +198,7 @@ class DateStats extends Component {
                 </div>
 
                 <div id="menu4" className="tab-pane fade">
-                    <div style={{"width":"85%"}}>
+                    <div>
                     <Chart type="line" x_label="OVER" y_label="Runs" data_A={over_wise_run_team_a} data_B={over_wise_run_team_b} labels={over_array} team_Name={this.props.match.params['team_name_a']}/>
                     </div>
                                 
@@ -213,7 +213,7 @@ class DateStats extends Component {
                         </div>
                     </div>
                 
-            </div>
+            </div>:<Spinner />
         )
     }
 }

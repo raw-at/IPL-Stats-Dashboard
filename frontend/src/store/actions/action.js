@@ -3,7 +3,6 @@ export const DATA_EXTRACT = "DATA_EXTRACT";
 export const CHART_DATA_EXTRACT = "CHART_DATA_EXTRACT";
 export const DATE_WISE_DATA = 'DATE_WISE_DATA';
 export const PLAYER_DATA_EXTRACT = 'PLAYER_DATA_EXTRACT';
-
 export const dataExtract_Done = (data) => {
             
     return {
@@ -34,10 +33,9 @@ export const playerDataExtractor = (data) => {
 
 }
 
-
 export const dataExtract = (seasonId) => {
     return dispatch => {
-        axios.get('http://localhost:8000/season/'+seasonId).then((response)=>{
+        axios.get('http://18.216.188.75:8000/season/'+seasonId).then((response)=>{
             dispatch(dataExtract_Done(response.data))
         })
     }
@@ -47,7 +45,7 @@ export const dataExtract = (seasonId) => {
 
 export const chartDataExtract = (seasonId,teamShortCode) => {
     return dispatch => {
-        axios.get('http://localhost:8000/'+seasonId+'/'+teamShortCode).then((response)=>{
+        axios.get('http://18.216.188.75:8000/'+seasonId+'/'+teamShortCode).then((response)=>{
             dispatch(chartDataExtractor(response.data))
         })
     }
@@ -55,9 +53,9 @@ export const chartDataExtract = (seasonId,teamShortCode) => {
 }
 
 export const dateDataExtract = (date) => {
-    console.log(date)
     return dispatch => {
-        axios.get('http://localhost:8000/match/info/'+date).then((response)=>{
+        axios.get('http://18.216.188.75:8000/match/info/'+date).then((response)=>{
+        
             dispatch(dateDataExtractor(response.data))
         })
     }
@@ -67,7 +65,7 @@ export const dateDataExtract = (date) => {
 
 export const playerDataExtract = (season,player_name) => {
     return dispatch => {
-        axios.get('http://localhost:8000/'+season+'/'+'player/'+player_name).then((response)=>{
+        axios.get('http://18.216.188.75:8000/'+season+'/'+'player/'+player_name).then((response)=>{
             dispatch(playerDataExtractor(response.data))
         })
     }

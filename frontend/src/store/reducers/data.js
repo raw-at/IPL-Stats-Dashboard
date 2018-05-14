@@ -13,7 +13,6 @@ const reducer = (state=initialState,action) => {
     switch(action.type){
         case actionTypes.DATA_EXTRACT:
             return {
-                ...state,
                 data:action.data,
             }
         case actionTypes.CHART_DATA_EXTRACT:

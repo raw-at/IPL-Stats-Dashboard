@@ -3,7 +3,6 @@ import {Bar} from 'react-chartjs-2';
 import classes from './Chart.css';
 class Chart extends Component {
      render(){
-         console.log(this.props)
        const data = {
             // labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
             datasets: [{
@@ -103,7 +102,6 @@ class Chart extends Component {
             
           
        
-        console.log(this.props.data)
         return (
             <div className={classes.Chart}>
                 <Bar 

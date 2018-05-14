@@ -26,12 +26,11 @@ class Team extends Component {
         let matchBetween = [];
         let chart = null;
         let winning_percentage = null;
-
+        let win_count = null;
+        let lose_count = null;
         if(this.props.chartData){
-            console.log(this.props.chartData)
             this.props.chartData.Performance.map(data=>{
                 if(data.Team_Short_Code == this.props.match.params['team_name'] ||data.Team_Short_Code == this.props.match.params['team_name']+'\r' ){
-                    console.log('yo')
                     team_data.push(data);
                 }else{
 
@@ -39,6 +38,16 @@ class Team extends Component {
                     opponent_team_data.push(data);
                 }
             })
+            console.log(opponent_team_data);
+            console.log(team_data)
+            for(let i=0;i<team_data.length;i++){
+                if(team_data[i].Score>opponent_team_data[i].Score){
+                    win_count+=1;
+                }
+                else{
+                    lose_count+=1;
+                }
+            }
          team_data.map(data=>{
             team_runs.push(data.Score + data.Extra)
          })
@@ -51,7 +60,7 @@ class Team extends Component {
                     type="bar" data_A={team_runs} data_B={opponent_runs} labels={matchBetween} team_Name={this.props.match.params['team_name']}/>
                       
          )
-         winning_percentage = Math.floor((this.props.chartData.Total_Matches_Played-this.props.chartData.Lost_Matches)/(this.props.chartData.Total_Matches_Played)*100);
+         winning_percentage = Math.floor((this.props.chartData.Total_Matches_Played-lose_count)/(this.props.chartData.Total_Matches_Played)*100);
         }
         else{
             this.chart = (<Spinner/>)
@@ -87,8 +96,8 @@ class Team extends Component {
                                                 {
                                                     label:'Match Statistics',
                                                     data:[
-                                                    this.props.chartData.Win_Matches,
-                                                    this.props.chartData.Lost_Matches,
+                                                    win_count,
+                                                    lose_count,
                                                     ],
                                                     backgroundColor:[
                                                     'rgba(255, 80, 80,0.8)',
@@ -108,8 +117,8 @@ class Team extends Component {
                                     </div><br />
                                 <Card card_type="team_season_card"
                                     Total_Matches_Played={this.props.chartData.Total_Matches_Played}
-                                    Win_Matches={this.props.chartData.Win_Matches}
-                                    Lost_Matches={this.props.chartData.Lost_Matches}/>
+                                    Win_Matches={win_count}
+                                    Lost_Matches={lose_count}/>
                                                 
                             
             </div>:null}

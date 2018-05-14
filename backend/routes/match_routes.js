@@ -10,11 +10,8 @@ module.exports = function(app,connection){
         
         connection.query(query,function(err,result){
             if(err) throw err;
-            //console.log('Result: '+JSON.stringify(result)) 
             response['team_season_wise'] = result;
-            //res.send(result);
-            //console.log(team_season_wise)
-
+          
         });
         query = "select Count(Ball_by_Ball.Player_dissimal_Id) as total_wickets from Ball_by_Ball inner join Matches \
         on Ball_by_Ball.Match_Id = Matches.Match_Id where (Matches.Season_Id = 1 and Ball_by_Ball.Player_dissimal_Id !=0)";
@@ -33,7 +30,7 @@ module.exports = function(app,connection){
         connection.query(query,function(err,result){
             if(err) throw err;
             response['caps_and_man_of_series'] = result;
-            //console.log(caps_and_man_of_series);
+          
         });
 
         query = "select NewTable.Match_Date,NewTable.TeamA,Team.Team_Short_Code as 'TeamB' FROM ((select Matches.Match_Date,Matches.Opponent_Team_Id,Team.Team_Short_Code as'TeamA' \
@@ -42,8 +39,7 @@ module.exports = function(app,connection){
         connection.query(query,function(err,result){
             if(err) throw err;
             response['date_wise_match_with_team_name' ]= result;
-            //res.send(result);
-            //console.log(caps_and_man_of_series);
+          
         });
 
         query = "select distinct FinalTable.Player_Name,Team.Team_Name from ((select Player.Player_Name,TableA.Team_id from \
@@ -55,8 +51,6 @@ module.exports = function(app,connection){
         connection.query(query,function(err,result){
             if(err) throw err;
             response['team_wise_player_name'] = result;
-            //res.send(result);
-            //console.log(caps_and_man_of_series);
         });
            
         query = "select count(Match_Id) as Total_Matches from Matches where Matches.Season_Id = "+id+";        "
@@ -65,8 +59,6 @@ module.exports = function(app,connection){
         connection.query(query,function(err,result){
             if(err) throw err;
             response['total_matches'] = result;
-            //res.send(result);
-            //console.log(caps_and_man_of_series);
         });
 
 
@@ -76,8 +68,6 @@ module.exports = function(app,connection){
         connection.query(query,function(err,result){
             if(err) throw err;
             response['total_fours'] = result;
-            //res.send(result);
-            //console.log(caps_and_man_of_series);
         });
             
         query = "select count(Ball_Id) as Total_Sixes from (select Ball_by_Ball.Ball_Id,Ball_by_Ball.Batsman_Scored from (\
@@ -128,8 +118,7 @@ module.exports = function(app,connection){
                 if(err) throw err;
                 
                 player_info["0"]['Total_Runs'] = result[0]['Season_Score']; 
-                console.log(player_info)
-                //res.send(player_info);
+                
             });
             
             bowling_query = "select count(Ball_by_Ball.Player_dissimal_Id) as Total_Wickets from Ball_by_Ball \
@@ -149,7 +138,6 @@ module.exports = function(app,connection){
 
     app.get('/:season_id/:team_short_name',(req,res)=>{
         var team_short_name = req.params.team_short_name;
-        console.log(team_short_name)
         var team_name = null;
         var season_id = parseInt(req.params.season_id);
         var team_Id = null;
@@ -157,11 +145,9 @@ module.exports = function(app,connection){
 
 
         query = "select Team_Name from Team where Team.Team_Short_Code like '"+team_short_name+"%'";
-        console.log(query)
         connection.query(query,(err,result)=>{
             if(err) throw err;
             team_name = result[0]['Team_Name'];
-            console.log(team_name)
         })
 
         query = "select distinct Team.Team_Id,Team.Team_Name from Team inner join \
@@ -179,9 +165,7 @@ module.exports = function(app,connection){
         
         connection.query(query,(err,result)=>{
             if(err) throw err;
-            //    res.send(result)
             final_result['Total_Matches_Played'] = result["0"]["Total_Matches"] 
-                //res.send(final_result);
             
         });
 
@@ -193,7 +177,6 @@ module.exports = function(app,connection){
             if(err) throw err;
             final_result['Win_Matches'] = result["0"]["Win_Matches"]; 
             final_result['Lost_Matches'] = final_result["Total_Matches_Played"] - final_result["Win_Matches"];
-            //res.send(final_result);
             
         });
         
@@ -267,14 +250,12 @@ module.exports = function(app,connection){
                 from Team inner join (select Match_Winner_Id,Win_Type,Won_By,Man_Of_The_Match_Id \
                 from Matches where  Matches.Match_Date like '"+date+"' and Matches.Team_Name_Id = "+team_id+") as table_A on Team.Team_Id = table_A.Match_Winner_Id) \
                 as f_table on Player.Player_Id = f_table.Man_Of_The_Match_Id;"
-                console.log(query)    
                 connection.query(query,(err,result)=>{
                     if(err) throw err;
                     
                     final_result["0"]["More_details"] = result[0];
                     
                     
-                    //res.send(final_result);
                     
                 });
         query = "select table_C.Player_Name,table_C.Wickets,Team_Short_Code as Team From Team inner join \
@@ -304,7 +285,6 @@ module.exports = function(app,connection){
                     
                     final_result["Batting_details"] = result;
                         
-                    //res.send(final_result);
                     
                 });
         

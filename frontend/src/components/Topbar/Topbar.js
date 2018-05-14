@@ -12,7 +12,7 @@ class Topbar extends Component  {
                     <div className="container-fluid">
                         <div className="navbar-header">
                         <button   type="button" className="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
-                            <i style={{"color":"white","position":"relative","top":"-6px"}} class="fa fa-2x fa-align-justify"></i>
+                            <i style={{"color":"white","position":"relative","top":"-6px"}} className="fa fa-2x fa-align-justify"></i>
                         </button>
                         <a className="navbar-brand" href="#">IPL Dashboard</a>
                         </div>
