@@ -47,6 +47,18 @@ Database : Mysql (As Kaggle data was highly relational)
 Node.js is used for writing backend API's and helps the front-end react app to communicate with database(Mysql) 
 
 
+### Screenshots 
+#### Home Page
+![ipl1](https://user-images.githubusercontent.com/20211990/40380847-cd058930-5e17-11e8-9a03-637f48102236.png)
+
+#### Team-Wise Stats
+![ipl2](https://user-images.githubusercontent.com/20211990/40380855-cf0973b8-5e17-11e8-9153-f3e4de7da7ac.png)
+
+#### Date-Wise Stats
+![ipl3](https://user-images.githubusercontent.com/20211990/40380858-d07c928e-5e17-11e8-9ea6-acb13675febe.png)
+
+
+![ipl4](https://user-images.githubusercontent.com/20211990/40380860-d1c1fa4e-5e17-11e8-8e6d-f2aa3efbeaea.png)
 
  
  
