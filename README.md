@@ -48,28 +48,6 @@ Node.js is used for writing backend API's and helps the front-end react app to c
 
 
 
-### Bonus Point
-* Vue.js : Not Used 
-
-* Mobile Responsive : Yes 
-
-
-App is mobile responsive so that mobile user can easily access it . To make it mobile responsive i used bootstrap library for 
-most of the front-end part .
-
-
-    
-* Optimize Loading Time : Yes 
-
-
-During Webpack bundling I used Lazy Loading Tecnique so that initial bundle which is required to run the app is of minimum
-size and app can easily start up and when the user load other pages ,he/she will get the other small bundles of js accordingly
-This saves a lot of time during app starting process
-
-
-* Progressive Web-App : Not Completely
- 
-* Offline Usable : No as service workers are not written up 
  
  
  
